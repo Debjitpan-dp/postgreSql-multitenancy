@@ -24,10 +24,8 @@ public class MultitenantConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "tenants")
-    public DataSource dataSource() throws IOException {
+    public DataSource dataSource() {
         File[] files = Paths.get("allTenants").toFile().listFiles();
-//        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//        Resource[] resources = resolver.getResources("classpath*: allTenants/*");
         Map<Object, Object> resolvedDataSources = new HashMap<>();
         assert (files != null);
         for (File propertyFile : files) {
@@ -37,8 +35,8 @@ public class MultitenantConfiguration {
             try {
                 tenantProperties.load(new FileInputStream(propertyFile));
                 String tenantId = tenantProperties.getProperty("name");
-                dataSourceBuilder.driverClassName(tenantProperties.getProperty("datasource.driver-class-name"));
 
+                dataSourceBuilder.driverClassName(tenantProperties.getProperty("datasource.driver-class-name"));
                 dataSourceBuilder.username(tenantProperties.getProperty("datasource.username"));
                 dataSourceBuilder.password(tenantProperties.getProperty("datasource.password"));
                 dataSourceBuilder.url(tenantProperties.getProperty("datasource.url"));
@@ -49,9 +47,11 @@ public class MultitenantConfiguration {
         }
 
         AbstractRoutingDataSource dataSource = new MultitenantDataSource();
-        dataSource.setDefaultTargetDataSource(resolvedDataSources);
+        dataSource.setDefaultTargetDataSource(resolvedDataSources.get(defaultTenant));
+        dataSource.setTargetDataSources(resolvedDataSources);
 
         dataSource.afterPropertiesSet();
         return dataSource;
     }
+
 }

@@ -3,9 +3,11 @@ package in.debjitpan.postgreSqlmultitenancy.filter;
 import in.debjitpan.postgreSqlmultitenancy.config.TenantContext;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class TenantFilter implements Filter {
 
     @Override

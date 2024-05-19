@@ -8,4 +8,5 @@ public class MultitenantDataSource extends AbstractRoutingDataSource {
     protected String determineCurrentLookupKey() {
         return TenantContext.getCurrentTenant();
     }
+
 }
