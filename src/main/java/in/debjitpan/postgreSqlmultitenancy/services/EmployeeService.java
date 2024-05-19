@@ -2,6 +2,7 @@ package in.debjitpan.postgreSqlmultitenancy.services;
 
 import in.debjitpan.postgreSqlmultitenancy.domain.Employee;
 import in.debjitpan.postgreSqlmultitenancy.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+    @Transactional
     public Employee save(Employee employee) {
         return employeeRepository.save(employee);
     }
